@@ -1,0 +1,26 @@
+name: Criar Executaveis
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Configurar Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Instalar PyInstaller
+      run: pip install pyinstaller
+
+    - name: Criar o EXE
+      run: pyinstaller --onefile --name PyNota_Windows main.py
+
+    - name: Upload do Arquivo Pronto
+      uses: actions/upload-artifact@v4
+      with:
+        name: PyNota_Windows
+        path: dist/PyNota_Windows.exe
