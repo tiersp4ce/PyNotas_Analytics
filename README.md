@@ -1,37 +1,40 @@
-# 📊 PyNotas_Analytics
+# 🔍 PyNotas_Analytics
 
-### Transformando registros acadêmicos em indicadores de performance 🚀
+### Motor de Busca e Filtragem Inteligente para Itens em Notas Fiscais
 
-O **PyNotas_Analytics** é uma ferramenta de análise de dados desenvolvida em Python para processar registros de notas. O foco do projeto é realizar a extração (ETL) e o tratamento de dados brutos para gerar métricas de desempenho e visualizações de tendências acadêmicas.
+O **PyNotas_Analytics** é uma ferramenta desenvolvida em Python para automatizar a localização e organização de itens em Notas Fiscais (NFs). O projeto resolve a dificuldade de busca manual em grandes volumes de dados fiscais, permitindo consultas granulares e instantâneas.
 
 ---
 
-## 📝 Sobre o Projeto
+## 🚀 Funcionalidades Principais
 
-Este projeto surgiu da necessidade de transformar dados brutos de avaliações em informações úteis para tomadas de decisão. Ele permite identificar padrões de aprendizado, médias por categoria e prever tendências de desempenho ao longo do tempo.
+O sistema foi projetado para oferecer precisão na recuperação de dados através de múltiplos filtros:
+
+* **Busca por Nome (Partial Match):** Filtra produtos que contenham o termo digitado, facilitando a busca mesmo sem o nome completo do item.
+* **Filtro por Código da NF:** Isola rapidamente todos os produtos vinculados a um número específico de nota fiscal.
+* **Filtro por Data:** Permite restringir a busca a períodos específicos de emissão para controle de estoque ou financeiro.
+* **Extração de Dados (ETL):** Processa e limpa informações brutas de arquivos fiscais para consulta dinâmica.
+
+
 
 ---
 
 ## 🛠️ Tecnologias e Ferramentas
 
-* **Linguagem:** ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
-* **Manipulação de Dados:** Pandas
-* **Visualização:** Matplotlib / Seaborn
-* **Ambiente:** Linux (Arch/Nobara)
+* **Linguagem Principal:** ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
+* **Manipulação de Dados:** **Pandas** (utilizado para a lógica de filtros e tratamento de DataFrames).
+* **Ambiente de Desenvolvimento:** **Linux (Arch Linux / Nobara OS)**.
 
 ---
 
-## ✨ Funcionalidades
+## 💻 Exemplo de Implementação (Lógica de Busca)
 
-- [x] **Limpeza de Dados:** Tratamento de valores nulos e normalização de registros.
-- [x] **Métricas de Performance:** Cálculo automático de médias, desvio padrão e taxas de aprovação.
-- [x] **Visualização de Dados:** Geração de gráficos de linha para tendências e histogramas para distribuição de notas.
-- [x] **Exportação de Relatórios:** Geração de arquivos processados para consulta rápida.
+Abaixo, um exemplo de como a filtragem é aplicada utilizando a performance do Pandas:
 
----
-
-## 🚀 Como Executar o Projeto
-
-1. **Clone o repositório:**
-   ```bash
-   git clone [https://github.com/henrique-hema/pynotas-analytics.git](https://github.com/henrique-hema/pynotas-analytics.git)
+```python
+# Lógica central de filtragem do projeto
+resultado = df[
+    (df['produto'].str.contains(termo_busca, case=False)) & 
+    (df['codigo_nf'] == codigo_digitado) &
+    (df['data'] == data_selecionada)
+]
