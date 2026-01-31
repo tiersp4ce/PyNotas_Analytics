@@ -1,40 +1,41 @@
 # 🔍 PyNotas_Analytics
 
-### Motor de Busca e Filtragem Inteligente para Itens em Notas Fiscais
+### Motor de Busca e Processamento de Itens em Notas Fiscais (NFe)
 
-O **PyNotas_Analytics** é uma ferramenta desenvolvida em Python para automatizar a localização e organização de itens em Notas Fiscais (NFs). O projeto resolve a dificuldade de busca manual em grandes volumes de dados fiscais, permitindo consultas granulares e instantâneas.
+O **PyNotas_Analytics** é uma ferramenta robusta desenvolvida em Python para automatizar a extração, organização e consulta de dados contidos em arquivos XML de Notas Fiscais Eletrônicas. O projeto resolve a complexidade de buscar itens manualmente em grandes volumes de arquivos fiscais, permitindo filtros instantâneos por múltiplos critérios.
 
 ---
 
-## 🚀 Funcionalidades Principais
+## 🚀 Funcionalidades Técnicas
 
-O sistema foi projetado para oferecer precisão na recuperação de dados através de múltiplos filtros:
+O sistema foi arquitetado com foco em precisão e performance:
 
-* **Busca por Nome (Partial Match):** Filtra produtos que contenham o termo digitado, facilitando a busca mesmo sem o nome completo do item.
-* **Filtro por Código da NF:** Isola rapidamente todos os produtos vinculados a um número específico de nota fiscal.
-* **Filtro por Data:** Permite restringir a busca a períodos específicos de emissão para controle de estoque ou financeiro.
-* **Extração de Dados (ETL):** Processa e limpa informações brutas de arquivos fiscais para consulta dinâmica.
-
-
+* **Parsing Inteligente de XML:** Utiliza a biblioteca `xml.etree.ElementTree` para navegar em estruturas complexas de NFe.
+* **Limpeza de Namespaces:** Implementação de um método interno para tratar e remover namespaces automáticos do XML, garantindo que as tags de dados (como `<xProd>`, `<nNF>`, `<dhEmi>`) sejam localizadas sem erros.
+* **Indexação e Metadados:** Extrai e organiza informações cruciais:
+    * 📦 Nome do Produto
+    * 🏢 Nome/Fantasia do Fornecedor
+    * 📄 Número da Nota Fiscal
+    * 🔑 Chave de Acesso (44 dígitos)
+    * 📅 Data de Emissão (com ordenação automática)
+* **Motor de Busca Dinâmica:** Sistema de busca que ignora diferenças entre maiúsculas e minúsculas (*case-insensitive*) para encontrar produtos através de termos parciais.
 
 ---
 
 ## 🛠️ Tecnologias e Ferramentas
 
-* **Linguagem Principal:** ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
-* **Manipulação de Dados:** **Pandas** (utilizado para a lógica de filtros e tratamento de DataFrames).
-* **Ambiente de Desenvolvimento:** **Linux (Arch Linux / Nobara OS)**.
+* **Linguagem:** Python 3.x
+* **Processamento XML:** ElementTree
+* **Gerenciamento de Arquivos:** OS (para leitura em lote e criação automatizada de diretórios)
+* **Ambiente:** Desenvolvido e otimizado para sistemas Linux.
 
 ---
 
 ## 💻 Exemplo de Implementação (Lógica de Busca)
 
-Abaixo, um exemplo de como a filtragem é aplicada utilizando a performance do Pandas:
+A filtragem dos dados é realizada de forma eficiente através de *list comprehension*, permitindo consultas rápidas mesmo em catálogos extensos:
 
 ```python
-# Lógica central de filtragem do projeto
-resultado = df[
-    (df['produto'].str.contains(termo_busca, case=False)) & 
-    (df['codigo_nf'] == codigo_digitado) &
-    (df['data'] == data_selecionada)
-]
+def buscar(self, termo):
+    """Retorna uma lista de produtos que correspondem ao termo."""
+    return [p for p in self.catalogo if termo.lower() in p['produto'].lower()]
